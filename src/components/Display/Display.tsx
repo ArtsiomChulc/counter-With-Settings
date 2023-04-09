@@ -1,5 +1,4 @@
 import React from 'react';
-import {Buttons} from "../ButtonInput/Buttons";
 import s from './Display.module.css'
 
 

@@ -1,13 +1,21 @@
 import React, {useState} from 'react';
 import s from './App.module.css';
 import {Display} from "./components/Display/Display";
-import {Buttons} from "./components/ButtonInput/Buttons";
+import {SuperButton} from "./components/SuperButton/SuperButton";
+
+
+export type ButtonsNameType = {
+    reset?: string
+    increment?: string
+    settings?: string
+}
 
 function App() {
-    let[count, setCount] = useState<number>(0)
+
+    let [count, setCount] = useState<number>(0)
 
     const countIncrHandlerCB = () => {
-        if(count === 5) {
+        if (count === 5) {
             return
         } else {
             setCount(++count)
@@ -15,18 +23,25 @@ function App() {
     }
 
     const countResetHandlerCB = () => {
-        if(count > 0) setCount(0)
+        if (count > 0) setCount(0)
+    }
+
+    const getSettingsCount =() => {
+
     }
 
     return (
-        <div className={s.App}>
-            <Display
-                count={count}/>
-            <Buttons
-                count={count}
-                countResetHandlerCB={countResetHandlerCB}
-                countIncrHandlerCB={countIncrHandlerCB}/>
+        <div className={s.wrapCounter}>
+            <div className={s.Counter}>
+                <Display count={count}/>
+                <div className={s.wrapBTN}>
+                    <SuperButton name={'Incr'} callBack={countIncrHandlerCB}/>
+                    <SuperButton name={'Reset'} callBack={countResetHandlerCB}/>
+                    <SuperButton name={'Set'} callBack={getSettingsCount}/>
+                </div>
+            </div>
         </div>
+
     );
 }
 
