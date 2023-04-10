@@ -1,12 +1,13 @@
-import React, {ChangeEvent, useState} from 'react';
-import s from './SuperInput.module.css'
+import React, {ChangeEvent} from 'react';
+import s from './InputMax.module.css'
 
 type SuperInputPropsType = {
     valueInput: string
     setValueInput: (valueInput: string) => void
+    title: string
 }
 
-export const SuperInput = (props: SuperInputPropsType) => {
+export const InputMax = (props: SuperInputPropsType) => {
 
 
     const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
@@ -15,7 +16,8 @@ export const SuperInput = (props: SuperInputPropsType) => {
 
     return (
         <div className={s.input}>
-            <input value={props.valueInput} onChange={onChangeHandler}/>
+            <p>{props.title}</p>
+            <input type={"number"} value={props.valueInput} onChange={onChangeHandler}/>
         </div>
     );
 };

@@ -2,37 +2,47 @@ import React, {useState} from 'react';
 import s from './App.module.css';
 import {Display} from "./components/Display/Display";
 import {SuperButton} from "./components/SuperButton/SuperButton";
-import {SuperInput} from "./components/SuperInput/SuperInput";
-
+import {InputMax} from "./components/InputMax/InputMax";
+import {InputMin} from "./components/InputMin/InputMin";
+import {Simulate} from "react-dom/test-utils";
+import error = Simulate.error;
 
 
 function App() {
 
     const [valueInput, setValueInput] = useState<string>('')
+    const [valueInputMin, setValueInputMin] = useState<string>('')
+    const [error, setError] = useState<string | null>('')
+    const [isHidden, setIsHidden] = useState<boolean>(true)
+
+    let newCountString = localStorage.getItem('setValueInput')
+    let newCountMinString = localStorage.getItem('setValueInputMin')
+
+    let newMinCount = newCountMinString ? +JSON.parse(newCountMinString) : NaN
 
     let [count, setCount] = useState<number>(0)
 
-    let newCountString = localStorage.getItem('setValueInput')
 
     const countIncrHandlerCB = () => {
-
-        if(newCountString) {
-            if (count === JSON.parse(newCountString)) {
+        if (newCountString && newCountMinString) {
+            if (count === +JSON.parse(newCountString)) {
                 return
             } else {
                 setCount(++count)
             }
         }
-
     }
 
     const countResetHandlerCB = () => {
-        if (count > 0) setCount(0)
+        setCount(newMinCount)
     }
-
-    const setSettingsCount =() => {
-        localStorage.setItem('setValueInput', JSON.stringify(valueInput))
-        setValueInput('')
+    localStorage.setItem('setValueInput', JSON.stringify(valueInput))
+    localStorage.setItem('setValueInputMin', JSON.stringify(valueInputMin))
+    const setSettingsCount = () => {
+        // localStorage.setItem('setValueInput', JSON.stringify(valueInput))
+        // localStorage.setItem('setValueInputMin', JSON.stringify(valueInputMin))
+        setCount(newMinCount)
+        setIsHidden(!isHidden)
     }
 
     return (
@@ -41,12 +51,21 @@ function App() {
                 <Display
                     count={count}
                     newCountString={newCountString}
+                    setError={setError}
+                    error={error}
                 />
-                <SuperInput valueInput={valueInput} setValueInput={setValueInput} />
+                {isHidden && <div className={s.inputs}>
+                    <InputMax title={'Max'} valueInput={valueInput} setValueInput={setValueInput}/>
+                    <InputMin titleMin={'Min'} valueInputMin={valueInputMin} setValueInputMin={setValueInputMin}/>
+                </div>}
+
 
                 <div className={s.wrapBTN}>
-                    <SuperButton name={'Incr'} callBack={countIncrHandlerCB}/>
-                    <SuperButton name={'Reset'} callBack={countResetHandlerCB}/>
+                    {!isHidden && <>
+                        <SuperButton name={'Incr'} callBack={countIncrHandlerCB}/>
+                        <SuperButton name={'Reset'} callBack={countResetHandlerCB}/>
+                    </>}
+
                     <SuperButton name={'Set'} callBack={setSettingsCount}/>
                 </div>
             </div>

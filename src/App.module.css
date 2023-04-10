@@ -12,10 +12,15 @@
   flex-direction: column;
   gap: 40px;
   width: 400px;
-  height: 300px;
+  min-height: 300px;
   border: 2px solid black;
   border-radius: 10px;
   background-color: aqua;
+}
+
+.inputs {
+  display: flex;
+  justify-content: space-around;
 }
 
 .wrapBTN {
