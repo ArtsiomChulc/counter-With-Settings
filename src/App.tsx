@@ -1,11 +1,9 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import s from './App.module.css';
 import {Display} from "./components/Display/Display";
 import {SuperButton} from "./components/SuperButton/SuperButton";
 import {InputMax} from "./components/InputMax/InputMax";
 import {InputMin} from "./components/InputMin/InputMin";
-import {Simulate} from "react-dom/test-utils";
-import error = Simulate.error;
 
 
 function App() {
@@ -15,8 +13,18 @@ function App() {
     const [error, setError] = useState<string | null>('')
     const [isHidden, setIsHidden] = useState<boolean>(true)
 
+    useEffect(() => {
+        let value = localStorage.getItem('setValueInputMin')
+        if(value) {
+            let newValue = +JSON.parse(value)
+            setCount(newValue)
+        }
+    }, [])
+
     let newCountString = localStorage.getItem('setValueInput')
     let newCountMinString = localStorage.getItem('setValueInputMin')
+
+
 
     let newMinCount = newCountMinString ? +JSON.parse(newCountMinString) : NaN
 
@@ -24,7 +32,7 @@ function App() {
 
 
     const countIncrHandlerCB = () => {
-        if (newCountString && newCountMinString) {
+        if (newCountString) {
             if (count === +JSON.parse(newCountString)) {
                 return
             } else {
@@ -36,13 +44,12 @@ function App() {
     const countResetHandlerCB = () => {
         setCount(newMinCount)
     }
-    localStorage.setItem('setValueInput', JSON.stringify(valueInput))
-    localStorage.setItem('setValueInputMin', JSON.stringify(valueInputMin))
+
     const setSettingsCount = () => {
-        // localStorage.setItem('setValueInput', JSON.stringify(valueInput))
-        // localStorage.setItem('setValueInputMin', JSON.stringify(valueInputMin))
-        setCount(newMinCount)
         setIsHidden(!isHidden)
+        localStorage.setItem('setValueInput', JSON.stringify(valueInput))
+        localStorage.setItem('setValueInputMin', JSON.stringify(valueInputMin))
+        setCount(newMinCount)
     }
 
     return (
