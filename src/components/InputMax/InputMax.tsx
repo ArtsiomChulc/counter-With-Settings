@@ -9,7 +9,6 @@ type SuperInputPropsType = {
 
 export const InputMax = (props: SuperInputPropsType) => {
 
-
     const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
         props.setValueInput(e.currentTarget.value)
     }
@@ -17,7 +16,7 @@ export const InputMax = (props: SuperInputPropsType) => {
     return (
         <div className={s.input}>
             <p>{props.title}</p>
-            <input type={"number"} value={props.valueInput} onChange={onChangeHandler}/>
+            <input type={"number"} value={props.valueInput ? props.valueInput : 0} onChange={onChangeHandler}/>
         </div>
     );
 };

@@ -23,7 +23,7 @@ export const Display = (props:DisplayPropsType) => {
     return (
         <div className={s.wrapDisplay}>
             <div>
-                <h1 className={styleCount}>{props.count}</h1>
+                <h1 className={styleCount}>{props.count ? props.count : 0}</h1>
             </div>
         </div>
     );
