@@ -6,7 +6,7 @@ type DisplayPropsType = {
     count: number
     newCountString: string | null
     setError: (error: string) => void
-    error: string | null
+    error: string | boolean
 }
 
 export const Display = (props:DisplayPropsType) => {

@@ -5,9 +5,11 @@ type InputMinPropsType ={
     valueInputStart: string
     setValueInputStart: (valueInputStart: string) => void
     titleMin: string
+    valueInput: string
 }
 
 export const InputStart = (props:InputMinPropsType) => {
+    const styleInputStart =  `${props.valueInputStart >= props.valueInput ? s.inputStartError : ''}`
 
     const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
         props.setValueInputStart(e.currentTarget.value)
@@ -16,7 +18,7 @@ export const InputStart = (props:InputMinPropsType) => {
     return (
         <div className={s.input}>
             <p>{props.titleMin}</p>
-            <input type={"number"} value={props.valueInputStart ? props.valueInputStart : 0} onChange={onChangeHandler}/>
+            <input className={styleInputStart} type={"number"} value={props.valueInputStart ? props.valueInputStart : 0} onChange={onChangeHandler}/>
         </div>
     );
 };

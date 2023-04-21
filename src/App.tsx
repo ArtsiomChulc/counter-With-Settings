@@ -6,13 +6,14 @@ import {InputStart} from "./components/InputMin/InputStart";
 import {Button} from "@mui/material";
 import TuneIcon from '@mui/icons-material/Tune';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
+import {SuperButton} from "./components/SuperButton/SuperButton";
 
 
 function App() {
 
     let [valueInput, setValueInput] = useState<string>('')
     const [valueInputStart, setValueInputStart] = useState<string>('')
-    const [error, setError] = useState<string | null>('')
+    const [error, setError] = useState<string | boolean>('')
     const [isHidden, setIsHidden] = useState<boolean>(true)
 
     useEffect(() => {
@@ -24,13 +25,13 @@ function App() {
         }
     }, [])
 
-    useEffect(()=>{
+    useEffect(() => {
         let inputMaxGetLS = localStorage.getItem("inputMax")
         if (inputMaxGetLS) setValueInput(JSON.parse(inputMaxGetLS))
     }, [])
 
 
-    let newCountString = localStorage.getItem('setValueInput')
+    let newCountString = localStorage.getItem('inputMax')
 
     let [count, setCount] = useState<number>(0)
 
@@ -39,10 +40,7 @@ function App() {
     }
 
     const countResetHandlerCB = () => {
-        setCount(0)
-        localStorage.removeItem('setValueInputStart')
-        localStorage.removeItem('inputMax')
-        localStorage.clear()
+        setCount(+valueInputStart)
     }
 
     const setSettingsCount = () => {
@@ -61,34 +59,58 @@ function App() {
                     error={error}
                 />
                 {isHidden && <div className={s.inputs}>
-                    <InputMax title={'Max'} valueInput={valueInput} setValueInput={setValueInput}/>
-                    <InputStart titleMin={'Start'} valueInputStart={valueInputStart} setValueInputStart={setValueInputStart}/>
+                    <InputMax
+                        error={error}
+                        title={'Max'}
+                        valueInput={valueInput}
+                        setValueInput={setValueInput}
+                        valueInputStart={valueInputStart}
+                    />
+                    <InputStart
+                        titleMin={'Start'}
+                        valueInputStart={valueInputStart}
+                        setValueInputStart={setValueInputStart}
+                        valueInput={valueInput}
+                    />
                 </div>}
 
 
                 <div className={s.wrapBTN}>
                     {!isHidden && <>
-                        <Button
-                            size={"small"}
-                            variant={"outlined"}
-                            onClick={countIncrHandlerCB}
-                        >Incr</Button>
-                        <Button
-                            size={"small"}
-                            endIcon={<RestartAltIcon/>}
-                            variant={"outlined"}
-                            onClick={countResetHandlerCB}
-                        >Reset</Button>
-                        {/*<SuperButton name={'Incr'} callBack={countIncrHandlerCB}/>*/}
-                        {/*<SuperButton name={'Reset'} callBack={countResetHandlerCB}/>*/}
+                        {/*<Button*/}
+                        {/*    size={"small"}*/}
+                        {/*    variant={"outlined"}*/}
+                        {/*    onClick={countIncrHandlerCB}*/}
+                        {/*>Incr</Button>*/}
+                        {/*<Button*/}
+                        {/*    disabled*/}
+                        {/*    size={"small"}*/}
+                        {/*    endIcon={<RestartAltIcon/>}*/}
+                        {/*    variant={"outlined"}*/}
+                        {/*    onClick={countResetHandlerCB}*/}
+                        {/*>Reset</Button>*/}
+                        <SuperButton
+                            disabled={+valueInput === count}
+                            name={'Incr'}
+                            callBack={countIncrHandlerCB}
+                        />
+                        <SuperButton
+                            disabled={+valueInputStart === count}
+                            name={'Reset'}
+                            callBack={countResetHandlerCB}
+                        />
                     </>}
-                    <Button
-                        endIcon={<TuneIcon/>}
-                        size={"small"}
-                        onClick={setSettingsCount}
-                        variant={"contained"}
-                    >Set</Button>
-                    {/*<SuperButton name={'Set'} callBack={setSettingsCount}/>*/}
+                    {/*<Button*/}
+                    {/*    endIcon={<TuneIcon/>}*/}
+                    {/*    size={"small"}*/}
+                    {/*    onClick={setSettingsCount}*/}
+                    {/*    variant={"contained"}*/}
+                    {/*>Set</Button>*/}
+                    <SuperButton
+                        disabled={valueInput <= valueInputStart}
+                        name={'Set'}
+                        callBack={setSettingsCount}
+                    />
                 </div>
             </div>
         </div>

@@ -8,3 +8,6 @@
     width: 60px;
     height: 25px;
 }
+.inputStartError {
+    background-color: red;
+}

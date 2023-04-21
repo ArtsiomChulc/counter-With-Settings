@@ -1,11 +1,14 @@
 import React from 'react';
 
 type SuperButtonPropsType = {
+    disabled?: boolean
     name: string
     callBack: () => void
 }
 
 export const SuperButton = (props:SuperButtonPropsType) => {
+
+
 
     const onClickHandler = () => {
         props.callBack()
@@ -13,7 +16,7 @@ export const SuperButton = (props:SuperButtonPropsType) => {
 
     return (
         <>
-            <button onClick={onClickHandler}>{props.name}</button>
+            <button disabled={props.disabled} onClick={onClickHandler}>{props.name}</button>
         </>
     );
 };
