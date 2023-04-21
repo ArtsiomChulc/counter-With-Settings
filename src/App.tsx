@@ -13,7 +13,6 @@ function App() {
 
     let [valueInput, setValueInput] = useState<string>('')
     const [valueInputStart, setValueInputStart] = useState<string>('')
-    const [error, setError] = useState<string | boolean>('')
     const [isHidden, setIsHidden] = useState<boolean>(true)
 
     useEffect(() => {
@@ -36,7 +35,7 @@ function App() {
     let [count, setCount] = useState<number>(0)
 
     const countIncrHandlerCB = () => {
-        setCount(++count)
+            setCount(++count)
     }
 
     const countResetHandlerCB = () => {
@@ -47,20 +46,20 @@ function App() {
         setIsHidden(!isHidden)
         localStorage.setItem('setValueInputStart', JSON.stringify(valueInputStart))
         localStorage.setItem("inputMax", JSON.stringify(valueInput))
+        setCount(+valueInputStart)
     }
 
     return (
         <div className={s.wrapCounter}>
             <div className={s.Counter}>
                 <Display
+                    valueInput={valueInput}
+                    valueInputStart={valueInputStart}
                     count={count}
                     newCountString={newCountString}
-                    setError={setError}
-                    error={error}
                 />
                 {isHidden && <div className={s.inputs}>
                     <InputMax
-                        error={error}
                         title={'Max'}
                         valueInput={valueInput}
                         setValueInput={setValueInput}
@@ -107,7 +106,7 @@ function App() {
                     {/*    variant={"contained"}*/}
                     {/*>Set</Button>*/}
                     <SuperButton
-                        disabled={valueInput <= valueInputStart}
+                        disabled={+valueInput <= +valueInputStart}
                         name={'Set'}
                         callBack={setSettingsCount}
                     />

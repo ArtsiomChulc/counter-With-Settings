@@ -9,10 +9,14 @@ type InputMinPropsType ={
 }
 
 export const InputStart = (props:InputMinPropsType) => {
-    const styleInputStart =  `${props.valueInputStart >= props.valueInput ? s.inputStartError : ''}`
+    const styleInputStart =  `${+props.valueInputStart >= +props.valueInput ? s.inputStartError : ''}`
 
     const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-        props.setValueInputStart(e.currentTarget.value)
+        if (+e.currentTarget.value < 0) {
+            return
+        } else {
+            props.setValueInputStart(e.currentTarget.value)
+        }
     }
 
     return (

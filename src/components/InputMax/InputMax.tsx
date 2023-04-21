@@ -4,7 +4,6 @@ import s from './InputMax.module.css'
 
 
 type SuperInputPropsType = {
-    error: string | boolean
     valueInput: string
     setValueInput: (valueInput: string) => void
     title: string
@@ -12,10 +11,14 @@ type SuperInputPropsType = {
 }
 
 export const InputMax = (props: SuperInputPropsType) => {
-    const styleInputMax =  `${props.valueInputStart >= props.valueInput ? s.inputMaxError : ''}`
+    const styleInputMax =  `${+props.valueInputStart >= +props.valueInput ? s.inputMaxError : ''}`
 
     const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-        props.setValueInput(e.currentTarget.value)
+        if (+e.currentTarget.value < 0) {
+            return
+        } else {
+            props.setValueInput(e.currentTarget.value)
+        }
     }
 
     return (
