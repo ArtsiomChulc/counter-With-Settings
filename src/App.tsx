@@ -1,12 +1,13 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import s from './App.module.css';
-import {Display} from "./components/Display/Display";
-import {InputMax} from "./components/InputMax/InputMax";
-import {InputStart} from "./components/InputMin/InputStart";
-import {Button} from "@mui/material";
+import { Display } from "./components/Display/Display";
+import { InputMax } from "./components/InputMax/InputMax";
+import { InputStart } from "./components/InputMin/InputStart";
+import { Button } from "@mui/material";
 import TuneIcon from '@mui/icons-material/Tune';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
-import {SuperButton} from "./components/SuperButton/SuperButton";
+import { SuperButton } from "./components/SuperButton/SuperButton";
+import { countReducer } from './components/reducers/countReducer';
 
 
 function App() {
@@ -35,7 +36,7 @@ function App() {
     let [count, setCount] = useState<number>(0)
 
     const countIncrHandlerCB = () => {
-            setCount(++count)
+        setCount(++count)
     }
 
     const countResetHandlerCB = () => {
