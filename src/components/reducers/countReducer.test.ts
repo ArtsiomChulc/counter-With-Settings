@@ -5,6 +5,6 @@ test('count should be incr', () => {
 		count: 0
 	}
 
-	let endtState = countReducer(startState, { type: "INCR-COUNT" })
-	expect(endtState.count).toBe(1)
+	let endState = countReducer(startState, { type: "INCR-COUNT" })
+	expect(endState.count).toBe(1)
 })

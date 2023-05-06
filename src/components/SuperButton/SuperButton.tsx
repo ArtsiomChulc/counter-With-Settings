@@ -7,16 +7,12 @@ type SuperButtonPropsType = {
 }
 
 export const SuperButton = (props:SuperButtonPropsType) => {
-
-
-
     const onClickHandler = () => {
         props.callBack()
     }
-
     return (
         <>
-            <button disabled={props.disabled} onClick={onClickHandler}>{props.name}</button>
+            <button disabled={props.disabled} onClick={onClickHandler}> {props.name} </button>
         </>
     );
 };

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useReducer, useState} from 'react';
 import s from './App.module.css';
 import { Display } from "./components/Display/Display";
 import { InputMax } from "./components/InputMax/InputMax";
@@ -7,12 +7,12 @@ import { Button } from "@mui/material";
 import TuneIcon from '@mui/icons-material/Tune';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import { SuperButton } from "./components/SuperButton/SuperButton";
-import { countReducer } from './components/reducers/countReducer';
+import {countReducer, incrCountAC, resetCountAC} from './components/reducers/countReducer';
 
 
 function App() {
 
-    let [valueInput, setValueInput] = useState<string>('')
+    let [valueInput, setValueInputMax] = useState<string>('')
     const [valueInputStart, setValueInputStart] = useState<string>('')
     const [isHidden, setIsHidden] = useState<boolean>(true)
 
@@ -20,50 +20,56 @@ function App() {
         let newCountStartString = localStorage.getItem('setValueInputStart')
         if (newCountStartString) {
             setValueInputStart(JSON.parse(newCountStartString))
-            let newValue = +JSON.parse(newCountStartString)
-            setCount(newValue)
+            let newValue = JSON.parse(newCountStartString)
+            const action = resetCountAC(newValue)
+            dispatchCount(action)
+            // setCount(newValue)
         }
     }, [])
 
     useEffect(() => {
         let inputMaxGetLS = localStorage.getItem("inputMax")
-        if (inputMaxGetLS) setValueInput(JSON.parse(inputMaxGetLS))
+        if (inputMaxGetLS) setValueInputMax(JSON.parse(inputMaxGetLS))
     }, [])
 
 
     let newCountString = localStorage.getItem('inputMax')
 
-    let [count, setCount] = useState<number>(0)
+    let [count, dispatchCount] = useReducer(countReducer, { count: 0 })
 
     const countIncrHandlerCB = () => {
-        setCount(++count)
+
+        const action = incrCountAC()
+        dispatchCount(action)
     }
 
     const countResetHandlerCB = () => {
-        setCount(+valueInputStart)
+        const action = resetCountAC(valueInputStart)
+        dispatchCount(action)
+        // setCount(+valueInputStart)
     }
 
     const setSettingsCount = () => {
         setIsHidden(!isHidden)
         localStorage.setItem('setValueInputStart', JSON.stringify(valueInputStart))
         localStorage.setItem("inputMax", JSON.stringify(valueInput))
-        setCount(+valueInputStart)
+        const action = resetCountAC(valueInputStart)
+        dispatchCount(action)
+        // setCount(+valueInputStart)
     }
 
     return (
         <div className={s.wrapCounter}>
             <div className={s.Counter}>
                 <Display
-                    valueInput={valueInput}
-                    valueInputStart={valueInputStart}
-                    count={count}
+                    count={count.count}
                     newCountString={newCountString}
                 />
                 {isHidden && <div className={s.inputs}>
                     <InputMax
                         title={'Max'}
                         valueInput={valueInput}
-                        setValueInput={setValueInput}
+                        setValueInput={setValueInputMax}
                         valueInputStart={valueInputStart}
                     />
                     <InputStart
@@ -90,12 +96,12 @@ function App() {
                         {/*    onClick={countResetHandlerCB}*/}
                         {/*>Reset</Button>*/}
                         <SuperButton
-                            disabled={+valueInput === count}
+                            disabled={+valueInput === count.count}
                             name={'Incr'}
                             callBack={countIncrHandlerCB}
                         />
                         <SuperButton
-                            disabled={+valueInputStart === count}
+                            disabled={+valueInputStart === count.count}
                             name={'Reset'}
                             callBack={countResetHandlerCB}
                         />
